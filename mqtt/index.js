@@ -1,7 +1,7 @@
 const mqtt = require('mqtt');
 const fs = require('fs');
 
-const base_topic = 'test-topic'
+const base_topic = 'test-topic';
 
 function connectMqtt() {
   const protocol = 'mqtt';
@@ -90,7 +90,6 @@ function connectMqttSSL() {
     console.log('subscribe to', message.toString());
     client.end();
   });
-
 }
 
 function connectWebsocketSSL() {
