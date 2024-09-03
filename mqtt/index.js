@@ -3,15 +3,15 @@ const fs = require('fs');
 
 const base_topic = 'test-topic';
 
-function connectMqtt() {
+function connectTCP() {
   const protocol = 'mqtt';
   const host = 'localhost';
   const port = '1883';
   const connectUrl = `${protocol}://${host}:${port}`;
   const clientId = `mqtt_${Math.random().toString(16).slice(3)}`;
-  const topic = base_topic + '/mqtt';
+  const topic = base_topic + '/tcp';
 
-  console.log('mqtt connect client id :', clientId);
+  console.log('TCP connect client id :', clientId);
   const client = mqtt.connect(connectUrl, {
     clientId,
     connectTimeout: 4000
@@ -20,7 +20,7 @@ function connectMqtt() {
   client.on('connect', () => {
     client.subscribe(topic, (error) => {
       if (!error) {
-        client.publish(topic, 'mqtt')
+        client.publish(topic, 'TPC')
       }
     });
   });
@@ -41,7 +41,7 @@ function connectWebsocket() {
   const clientId = `mqtt_${Math.random().toString(16).slice(3)}`;
   const topic = base_topic + '/websocket';
 
-  console.log('websocket connect client id :', clientId);
+  console.log('WebSocket connect client id :', clientId);
   const client = mqtt.connect(connectUrl, {
     clientId,
     connectTimeout: 4000,
@@ -50,7 +50,7 @@ function connectWebsocket() {
   client.on('connect', () => {
     client.subscribe(topic, (error) => {
       if (!error) {
-        client.publish(topic, 'websocket')
+        client.publish(topic, 'WebSocket')
       }
     });
   });
@@ -62,26 +62,26 @@ function connectWebsocket() {
   });
 }
 
-function connectMqttSSL() {
+function connectTLS() {
   const protocol = 'mqtts';
   const host = 'localhost';
   const port = '8883';
   const connectUrl = `${protocol}://${host}:${port}`;
   const clientId = `mqtt_${Math.random().toString(16).slice(3)}`;
-  const topic = base_topic + '/mqtt-ssl';
+  const topic = base_topic + '/tls-ssl';
 
-  console.log('mqtt(ssl) connect client id :', clientId);
+  console.log('TLS/SSL connect client id :', clientId);
   const client = mqtt.connect(connectUrl, {
     clientId,
     connectTimeout: 4000,
     // サーバーがCA証書を使用している場合は、CAを渡す
-    // ca: fs.readFileSync('./ssl/ca.crt'),
+    ca: fs.readFileSync('./ssl/ca.crt'),
   });
 
   client.on('connect', () => {
     client.subscribe(topic, (error) => {
       if (!error) {
-        client.publish(topic, 'mqtt(ssl)')
+        client.publish(topic, 'TLS/SSL')
       }
     });
   });
@@ -92,27 +92,27 @@ function connectMqttSSL() {
   });
 }
 
-function connectWebsocketSSL() {
+function connectSecureWebsocket() {
   const protocol = 'wss';
   const host = 'localhost';
   const port = '8084';
   const path = '';
   const connectUrl = `${protocol}://${host}:${port}${path}`;
   const clientId = `mqtt_${Math.random().toString(16).slice(3)}`;
-  const topic = base_topic + '/websocket-ssl';
+  const topic = base_topic + '/secure-websocket';
 
-  console.log('websocket(SSL) connect client id :', clientId);
+  console.log('Secure WebSocket connect client id :', clientId);
   const client = mqtt.connect(connectUrl, {
     clientId,
     connectTimeout: 4000,
     // サーバーがCA証書を使用している場合は、CAを渡す
-    // ca: fs.readFileSync('./ssl/ca.crt'),
+    ca: fs.readFileSync('./ssl/ca.crt'),
   });
 
   client.on('connect', () => {
     client.subscribe(topic, (error) => {
       if (!error) {
-        client.publish(topic, 'websocket(SSL)')
+        client.publish(topic, 'Secure WebSocket')
       }
     });
   });
@@ -123,7 +123,7 @@ function connectWebsocketSSL() {
   });
 }
 
-connectMqtt();
+connectTCP();
 connectWebsocket();
-connectMqttSSL();
-connectWebsocketSSL();
+connectTLS();
+connectSecureWebsocket();
